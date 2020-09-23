@@ -47,10 +47,12 @@ def get_text(url):
             a['href'] = a['href'].replace("https://dou.ua", "http://localhost:8888")
     # this part of code add a special character if the word consists of 6 letters, using regular expression
     if article is not None:
-        findtoure = article.find_all(text=re.compile('\s(\w{6})\s'))
+        findtoure = article.find_all(text=re.compile('\s(\w{6})\s|\s(\w{6})\.'))
         for comment in findtoure:
             resul = re.findall('\s(\w{6})\s', comment)
+            resul = resul + re.findall('\s(\w{6})\.', comment)
+            fixed_text = comment
             for kil in resul:
-                fixed_text = re.sub(kil,kil+'™', comment)
+                fixed_text = re.sub(kil, kil + '™', fixed_text)
             comment.replace_with(fixed_text)
     return root.prettify()
